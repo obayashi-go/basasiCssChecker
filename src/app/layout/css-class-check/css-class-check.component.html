@@ -1,0 +1,36 @@
+<mat-tab-group>
+  <mat-tab label="CSS-Class-Used">
+    <div class="css-class-used-wrapper">
+      <mat-card class="input">
+        <form [formGroup]="fg" (onsubmit)="execSearch()">
+          <section class="input-area">
+            <mat-form-field class="input-check-css" appearance="fill">
+              <mat-label>Check Style Selector</mat-label>
+              <input matInput placeholder="Ex. #hoge or .hoge" formControlName="inputStyleStr">
+            </mat-form-field>
+            <mat-radio-group aria-label="Check Device" formControlName="deviceType">
+              <mat-radio-button value="1">SP</mat-radio-button>
+              <mat-radio-button value="2">PC</mat-radio-button>
+            </mat-radio-group>
+            <section class="login-status-check">
+              <mat-checkbox formControlName="isLogin">Login</mat-checkbox>
+              <mat-checkbox formControlName="isLogout">Logout</mat-checkbox>
+            </section>
+          </section>
+          <button color="primary" mat-raised-button class="search-button" (click)="execSearch()">Search</button>
+        </form>
+      </mat-card>
+      <mat-card class="result">
+        <h1>Result</h1>
+        <ul *ngFor="let r of resultList">
+          <li>{{r.pageName}}</li>
+        </ul>
+        <!--{{ret}}-->
+      </mat-card>
+      <div id="tmpHtml" style="display: none;"></div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Confirm-Screen">
+
+  </mat-tab>
+</mat-tab-group>

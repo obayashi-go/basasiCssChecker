@@ -1,0 +1,33 @@
+.css-class-used-wrapper {
+  padding: 10px;
+  .input {
+    .input-area {
+      display: flex;
+      .input-check-css {
+        width: 30%;
+        max-width: 500px;
+        margin-right: 20px;
+      }
+      .mat-radio-group {
+        margin: auto 0;
+        .mat-radio-button ~ .mat-radio-button {
+          margin-left: 16px;
+        }
+      }
+      .login-status-check {
+        padding: 0 20px;
+        margin: auto 0;
+        .mat-checkbox ~ .mat-checkbox {
+          margin-left: 16px;
+        }
+      }
+    }
+    .search-button {
+      width: 100%;
+    }
+  }
+  .result {
+    margin-top: 20px;
+    min-height: 60px;
+  }
+}
