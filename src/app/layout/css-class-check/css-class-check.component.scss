@@ -4,8 +4,8 @@
     .input-area {
       display: flex;
       .input-check-css {
-        width: 30%;
-        max-width: 500px;
+        width: 40%;
+        max-width: 700px;
         margin-right: 20px;
       }
       .mat-radio-group {
@@ -14,7 +14,7 @@
           margin-left: 16px;
         }
       }
-      .login-status-check {
+      .login-status-check, .device-select-check {
         padding: 0 20px;
         margin: auto 0;
         .mat-checkbox ~ .mat-checkbox {
@@ -23,11 +23,112 @@
       }
     }
     .search-button {
-      width: 100%;
+      width: 80%;
+      display: block;
+      margin: 10px auto 0;
     }
   }
   .result {
     margin-top: 20px;
-    min-height: 60px;
+    min-height: 150px;
+    padding: 10px;
+    ul {
+      padding: 8px;
+      list-style: none;
+      li {
+        width: 100%;
+        .hit-page {
+          display: flex;
+          cursor: pointer;
+          p {
+            padding: 0;
+          }
+        }
+      }
+    }
+    .spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      -webkit-transform-origin: center;
+      transform-origin: center;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border-width: 8px;
+      border-style: solid;
+      border-color: #673ab7 rgb(103 58 183 / 70%) rgb(103 58 183 / 50%);
+      /* ローディング要素のアニメーションを指定 */
+      -webkit-animation: spinner1_1 1.5s infinite linear forwards;
+      animation: spinner1_1 1.5s infinite linear forwards;
+      span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        font-size: 12px;
+        animation: spinner_loading_text 1.5s infinite linear forwards reverse;
+      }
+    }
+    @-webkit-keyframes spinner1_1 {
+      0% {
+        -webkit-transform: translate(-50%, -50%) rotate(0);
+        transform: translate(-50%, -50%) rotate(0);
+      }
+      100% {
+        -webkit-transform: translate(-50%, -50%) rotate(360deg);
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    @keyframes spinner1_1 {
+      0% {
+        -webkit-transform: translate(-50%, -50%) rotate(0);
+        transform: translate(-50%, -50%) rotate(0);
+      }
+      100% {
+        -webkit-transform: translate(-50%, -50%) rotate(360deg);
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    /* Loading テキストのアニメーション内容 */
+    @-webkit-keyframes spinner_loading_text {
+      0% {
+        opacity: 1;
+        -webkit-transform: translate(-50%, -50%) rotate(0deg);
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      50% {
+        opacity: 0;
+        -webkit-transform: translate(-50%, -50%) rotate(180deg);
+        transform: translate(-50%, -50%) rotate(180deg);
+      }
+      100% {
+        opacity: 1;
+        -webkit-transform: translate(-50%, -50%) rotate(360deg);
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+    @keyframes spinner_loading_text {
+      0% {
+        opacity: 1;
+        -webkit-transform: translate(-50%, -50%) rotate(0deg);
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      50% {
+        opacity: 0;
+        -webkit-transform: translate(-50%, -50%) rotate(180deg);
+        transform: translate(-50%, -50%) rotate(180deg);
+      }
+      100% {
+        opacity: 1;
+        -webkit-transform: translate(-50%, -50%) rotate(360deg);
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
   }
 }

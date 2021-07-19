@@ -5,6 +5,7 @@ export interface ResultMap {
   type: JsonTYpe;
   typeLabel: string;
   matchCase: MatchCase;
+  matchCount: number;
 }
 export enum JsonTYpe {
   pcLogout = 0,
@@ -21,4 +22,8 @@ export const JsonTypeHashMap = [
   { jsonType: JsonTYpe.pcLogin, label: 'PCログイン' },
   { jsonType: JsonTYpe.spLogout, label: 'SPログアウト' },
   { jsonType: JsonTYpe.spLogin, label: 'SPログイン' }
+];
+export const MatchCaseHashMap = [
+    { caseId: MatchCase.class, label: 'class' },
+    { caseId: MatchCase.id, label: 'id' }
 ];

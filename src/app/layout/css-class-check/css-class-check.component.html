@@ -6,28 +6,42 @@
           <section class="input-area">
             <mat-form-field class="input-check-css" appearance="fill">
               <mat-label>Check Style Selector</mat-label>
-              <input matInput placeholder="Ex. #hoge or .hoge" formControlName="inputStyleStr">
+              <input matInput placeholder="input class or id" formControlName="inputStyleStr">
+              <mat-error *ngIf="fg.get('inputStyleStr').errors">セレクタを入力してください</mat-error>
             </mat-form-field>
-            <mat-radio-group aria-label="Check Device" formControlName="deviceType">
-              <mat-radio-button value="1">SP</mat-radio-button>
-              <mat-radio-button value="2">PC</mat-radio-button>
-            </mat-radio-group>
+            <section class="device-select-check">
+              <mat-checkbox color="primary" formControlName="isSp" formControlName="isSp">SP</mat-checkbox>
+              <mat-checkbox color="primary" formControlName="isPc" formControlName="isPc">PC</mat-checkbox>
+            </section>
             <section class="login-status-check">
-              <mat-checkbox formControlName="isLogin">Login</mat-checkbox>
-              <mat-checkbox formControlName="isLogout">Logout</mat-checkbox>
+              <mat-checkbox color="primary" formControlName="isLogin">Login</mat-checkbox>
+              <mat-checkbox color="primary" formControlName="isLogout">Logout</mat-checkbox>
             </section>
           </section>
-          <button color="primary" mat-raised-button class="search-button" (click)="execSearch()">Search</button>
+          <button color="primary" mat-raised-button class="search-button" (click)="execSearch()"><mat-icon>search</mat-icon>Search</button>
         </form>
       </mat-card>
       <mat-card class="result">
         <h1>Result</h1>
         <ul *ngFor="let r of resultList">
-          <li>{{r.pageName}}</li>
+          <ng-container *ngIf="r.pageId == 1">
+            <p class="group-title">{{r.typeLabel}}</p>
+          </ng-container>
+          <li>
+            <div class="hit-page" (click)="goToTargetPage(r.url)">
+              <p>{{r.pageName}}</p>
+              <p>該当：{{r.matchCount}}件</p>
+              <p>{{r.matchCase | matchCaseLabel}}</p>
+                <mat-icon>double_arrow</mat-icon>
+            </div>
+          </li>
         </ul>
-        <!--{{ret}}-->
+        <ng-container *ngIf="showLoading">
+          <div class="spinner">
+            <span>Searching...</span>
+          </div>
+        </ng-container>
       </mat-card>
-      <div id="tmpHtml" style="display: none;"></div>
     </div>
   </mat-tab>
   <mat-tab label="Confirm-Screen">

@@ -8,25 +8,27 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatchCaseLabel } from '../../components/match-case-label';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    CssClassCheckRoutingModule,
-    MatTabsModule,
-    MatCardModule,
-    MatButtonModule,
-    MatInputModule,
-    MatRadioModule,
-    MatCheckboxModule,
-    // MatExpansionModule,
-    // MatIconModule,
-    // MatSlideToggleModule,
-    // MatPaginatorModule
-    ReactiveFormsModule
-  ],
-  declarations: [CssClassCheckComponent]
+    imports: [
+        CommonModule,
+        CssClassCheckRoutingModule,
+        MatTabsModule,
+        MatCardModule,
+        MatButtonModule,
+        MatInputModule,
+        MatRadioModule,
+        MatCheckboxModule,
+        MatIconModule,
+        ReactiveFormsModule
+    ],
+    declarations: [
+        CssClassCheckComponent,
+        MatchCaseLabel
+    ]
 })
 export class CssClassCheckModule { }
