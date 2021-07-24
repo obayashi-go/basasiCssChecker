@@ -4,7 +4,14 @@ import pcLogoutSources from '../../json/pc-logout-souces.json';
 import pcLoginSources from '../../json/pc-login-sources.json';
 import spLogoutSources from '../../json/sp-logout-souces.json';
 import spLoginSources from '../../json/sp-login-sources.json';
-import { ResultMap, JsonTYpe, JsonTypeHashMap, MatchCase, MatchCaseHashMap } from '../../lib/page-source-map';
+import {
+    ResultMap,
+    JsonType,
+    JsonTypeHashMap,
+    MatchCase,
+    MatchCaseHashMap,
+    ConfirmPage
+} from '../../lib/page-source-map';
 
 @Component({
     selector: 'app-css-class-check',
@@ -16,6 +23,7 @@ export class CssClassCheckComponent implements OnInit {
     fg: FormGroup;
     resultList: ResultMap[] = [];
     showLoading: boolean;
+    confirmPageList: ConfirmPage[] = [];
 
     constructor(
         private formBuilder: FormBuilder
@@ -29,12 +37,15 @@ export class CssClassCheckComponent implements OnInit {
         });
     }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.createConfirmPageList(pcLoginSources.pcLoginSources);
+    }
 
     execSearch(): void {
         if (this.fg.invalid) {
           return;
         }
+        this.resultList = [];
         this.showLoading = true;
         const inputSelector: string = this.fg.get('inputStyleStr').value;
         const isSp: boolean = this.fg.get('isSp').value;
@@ -42,23 +53,32 @@ export class CssClassCheckComponent implements OnInit {
         const isLogout: boolean = this.fg.get('isLogout').value;
         const isLogin: boolean = this.fg.get('isLogin').value;
         if (isSp && isLogout) {
-            this.execCheckInputSelector(spLogoutSources.spLogoutSources, JsonTYpe.spLogout, inputSelector);
+            this.execCheckInputSelector(spLogoutSources.spLogoutSources, JsonType.spLogout, inputSelector);
         }
         if (isSp && isLogin) {
-            this.execCheckInputSelector(spLoginSources.spLoginSources, JsonTYpe.spLogin, inputSelector);
+            this.execCheckInputSelector(spLoginSources.spLoginSources, JsonType.spLogin, inputSelector);
         }
         if (isPc && isLogout) {
-            this.execCheckInputSelector(pcLogoutSources.pcLogoutSources, JsonTYpe.pcLogout, inputSelector);
+            this.execCheckInputSelector(pcLogoutSources.pcLogoutSources, JsonType.pcLogout, inputSelector);
         }
         if (isPc && isLogin) {
-            this.execCheckInputSelector(pcLoginSources.pcLoginSources, JsonTYpe.pcLogin, inputSelector);
+            this.execCheckInputSelector(pcLoginSources.pcLoginSources, JsonType.pcLogin, inputSelector);
         }
         this.showLoading = false;
     }
 
-    private execCheckInputSelector(htmlJson: object, jsonType: JsonTYpe, inputSelector: string): void {
+    private createConfirmPageList(jsonList: object[]): void {
+        jsonList.forEach(json => {
+            this.confirmPageList.push({
+                pageId: json['pageId'],
+                pageName: json['pageName'],
+                url: json['url']
+            });
+        });
+    }
+
+    private execCheckInputSelector(htmlJson: object, jsonType: JsonType, inputSelector: string): void {
         const jsonTypeLabel: string = JsonTypeHashMap.find(jt => jt.jsonType === jsonType).label;
-        console.log('!!!!!!!!!!!!', jsonTypeLabel);
         for (const [key, value] of Object.entries(htmlJson)) {
             const html = htmlJson[key]['source'];
             const checkAttrList = this.getTargetAttributeList(html, MatchCaseHashMap.find(m => m.caseId === MatchCase.class).label);
@@ -88,7 +108,6 @@ export class CssClassCheckComponent implements OnInit {
               v.startsWith("'" + inputSelector + ' ') ||
               v.endsWith(' ' + inputSelector + "'") ||
               ~v.indexOf(' ' + inputSelector + ' ') ) {
-              // console.log('Hit!!!  ' + v);
               hitCount++;
           }
         });
@@ -102,6 +121,6 @@ export class CssClassCheckComponent implements OnInit {
     }
 
     goToTargetPage(url: string): void {
-      location.href = url;
+      window.open(url);
     }
 }

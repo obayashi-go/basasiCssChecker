@@ -23,15 +23,19 @@
       </mat-card>
       <mat-card class="result">
         <h1>Result</h1>
-        <ul *ngFor="let r of resultList">
-          <ng-container *ngIf="r.pageId == 1">
-            <p class="group-title">{{r.typeLabel}}</p>
-          </ng-container>
-          <li>
+        <ul>
+          <li *ngFor="let r of resultList">
+            <ng-container *ngIf="r.pageId == 1">
+              <div class="group-title-area">
+                <mat-icon *ngIf="r.type === 0 || r.type === 1">computer</mat-icon>
+                <mat-icon *ngIf="r.type === 2 || r.type === 3">smartphone</mat-icon>
+                <p class="group-title">{{r.typeLabel}}</p>
+              </div>
+            </ng-container>
             <div class="hit-page" (click)="goToTargetPage(r.url)">
-              <p>{{r.pageName}}</p>
+              <p class="page-name">{{r.pageName}}</p>
               <p>該当：{{r.matchCount}}件</p>
-              <p>{{r.matchCase | matchCaseLabel}}</p>
+              <p>対象属性：{{r.matchCase | matchCaseLabel}}</p>
                 <mat-icon>double_arrow</mat-icon>
             </div>
           </li>
@@ -45,6 +49,17 @@
     </div>
   </mat-tab>
   <mat-tab label="Confirm-Screen">
-
+    <div class="confirm-page-wrapper">
+      <mat-card class="confirm-page">
+        <ul>
+          <li *ngFor="let c of confirmPageList">
+            <div class="hit-page" (click)="goToTargetPage(c.url)">
+              <p class="page-name">{{c.pageName}}</p>
+              <mat-icon>double_arrow</mat-icon>
+            </div>
+          </li>
+        </ul>
+      </mat-card>
+    </div>
   </mat-tab>
 </mat-tab-group>
