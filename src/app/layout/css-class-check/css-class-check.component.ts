@@ -25,7 +25,8 @@ export class CssClassCheckComponent implements OnInit {
     resultList: ResultMap[] = [];
     showLoading: boolean;
     confirmPageList: ConfirmPage[] = [];
-    showFutureShopBalloon = false;
+    showFutureShopUrl: string;
+    showType: JsonType;
 
     constructor(
         private formBuilder: FormBuilder
@@ -91,7 +92,8 @@ export class CssClassCheckComponent implements OnInit {
             this.confirmPageList.push({
                 pageId: json['pageId'],
                 pageName: json['pageName'],
-                url: json['url']
+                url: json['url'],
+                futureShopUrl: !!json['futureShopUrl'] ? json['futureShopUrl'] : ''
             });
         });
     }
@@ -149,10 +151,34 @@ export class CssClassCheckComponent implements OnInit {
     }
 
     goToTargetPage(url: string): void {
-      window.open(url);
+        window.open(url);
     }
 
-    showFutureShopUrlInfo(): void {
-        this.showFutureShopBalloon = true;
+    showFutureShopUrlInfo(url: string, type?: JsonType): void {
+        this.showFutureShopUrl = url;
+        this.showType = type;
+    }
+
+    balloonClose(): void {
+        this.showFutureShopUrl = '';
+        this.showType = 9;
+    }
+
+    copyMessage(val: string): void {
+        const selBox = document.createElement('textarea');
+        selBox.style.position = 'fixed';
+        selBox.style.left = '0';
+        selBox.style.top = '0';
+        selBox.style.opacity = '0';
+        selBox.value = val;
+        document.body.appendChild(selBox);
+        selBox.focus();
+        selBox.select();
+        document.execCommand('copy');
+        document.body.removeChild(selBox);
+    }
+
+    notAction(): void {
+        return;
     }
 }

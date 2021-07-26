@@ -33,24 +33,22 @@
               </div>
             </ng-container>
             <div class="show-future-info-button-wrapper">
-              <button class="show-future-info-button" mat-stroked-button color="primary" (click)="showFutureShopUrlInfo()">FS</button>
+              <button class="show-future-info-button" mat-stroked-button color="primary" (click)="showFutureShopUrlInfo(r.futureShopUrl, r.type)">FS</button>
             </div>
-            <div class="hit-page" (click)="goToTargetPage(r.url)">
-              <p class="page-name">{{r.pageName}}</p>
-              <p>該当：{{r.matchCount}}件</p>
-              <p>対象属性：{{r.matchCase | matchCaseLabel}}</p>
-              <mat-icon>double_arrow</mat-icon>
-            </div>
-            <div class="future-shop-balloon" *ngIf="showFutureShopBalloon">
-xxx
+            <div class="hit-page">
+              <p (click)="goToTargetPage(r.url)" class="page-name">{{r.pageName}}</p>
+              <p (click)="goToTargetPage(r.url)">該当：{{r.matchCount}}件</p>
+              <p (click)="goToTargetPage(r.url)">対象属性：{{r.matchCase | matchCaseLabel}}</p>
+              <mat-icon (click)="goToTargetPage(r.url)">double_arrow</mat-icon>
+              <div class="future-shop-balloon" *ngIf="showFutureShopUrl === r.futureShopUrl && showType === r.type">
+                <p class="future-shop-url-text">{{r.futureShopUrl}}</p>
+                <mat-icon class="copy-url" (click)="copyMessage(r.futureShopUrl)">copy_all</mat-icon>
+                <mat-icon class="open-new-window" (click)="goToTargetPage(r.futureShopUrl)">open_in_new</mat-icon>
+                <mat-icon class="balloon-close" (click)="balloonClose()">close</mat-icon>
+              </div>
             </div>
           </li>
         </ul>
-        <ng-container *ngIf="showLoading">
-          <div class="spinner">
-            <span>Searching...</span>
-          </div>
-        </ng-container>
       </mat-card>
     </div>
   </mat-tab>
@@ -59,9 +57,18 @@ xxx
       <mat-card class="confirm-page">
         <ul>
           <li *ngFor="let c of confirmPageList">
-            <div class="hit-page" (click)="goToTargetPage(c.url)">
-              <p class="page-name">{{c.pageName}}</p>
-              <mat-icon>double_arrow</mat-icon>
+            <div class="show-future-info-button-wrapper">
+              <button class="show-future-info-button" mat-stroked-button color="primary" (click)="showFutureShopUrlInfo(c.futureShopUrl)">FS</button>
+            </div>
+            <div class="hit-page">
+              <p class="page-name" (click)="goToTargetPage(c.url)">{{c.pageName}}</p>
+              <mat-icon (click)="goToTargetPage(c.url)">double_arrow</mat-icon>
+              <div class="future-shop-balloon" *ngIf="showFutureShopUrl === c.futureShopUrl">
+                <p class="future-shop-url-text">{{c.futureShopUrl}}</p>
+                <mat-icon class="copy-url" (click)="copyMessage(c.futureShopUrl)">copy_all</mat-icon>
+                <mat-icon class="open-new-window" (click)="goToTargetPage(c.futureShopUrl)">open_in_new</mat-icon>
+                <mat-icon class="balloon-close" (click)="balloonClose()">close</mat-icon>
+              </div>
             </div>
           </li>
         </ul>

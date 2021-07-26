@@ -33,4 +33,5 @@ export interface ConfirmPage {
     pageId: string;
     pageName: string;
     url: string;
+    futureShopUrl: string;
 }
