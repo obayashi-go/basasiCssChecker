@@ -13,6 +13,7 @@ import {
     ConfirmPage
 } from '../../lib/page-source-map';
 
+
 @Component({
     selector: 'app-css-class-check',
     templateUrl: './css-class-check.component.html',
@@ -24,6 +25,7 @@ export class CssClassCheckComponent implements OnInit {
     resultList: ResultMap[] = [];
     showLoading: boolean;
     confirmPageList: ConfirmPage[] = [];
+    showFutureShopBalloon = false;
 
     constructor(
         private formBuilder: FormBuilder
@@ -46,25 +48,42 @@ export class CssClassCheckComponent implements OnInit {
           return;
         }
         this.resultList = [];
-        this.showLoading = true;
+        // this.showLoading = true;
         const inputSelector: string = this.fg.get('inputStyleStr').value;
         const isSp: boolean = this.fg.get('isSp').value;
         const isPc: boolean = this.fg.get('isPc').value;
         const isLogout: boolean = this.fg.get('isLogout').value;
         const isLogin: boolean = this.fg.get('isLogin').value;
-        if (isSp && isLogout) {
-            this.execCheckInputSelector(spLogoutSources.spLogoutSources, JsonType.spLogout, inputSelector);
+        for (let i = 0; i < 2; i++) {
+            if (isSp && isLogout) {
+                this.execCheckInputSelector(
+                    spLogoutSources.spLogoutSources,
+                    JsonType.spLogout,
+                    inputSelector,
+                    i === 0 ? MatchCase.class : MatchCase.id);
+            }
+            if (isSp && isLogin) {
+                this.execCheckInputSelector(
+                    spLoginSources.spLoginSources,
+                    JsonType.spLogin,
+                    inputSelector,
+                    i === 0 ? MatchCase.class : MatchCase.id);
+            }
+            if (isPc && isLogout) {
+                this.execCheckInputSelector(
+                    pcLogoutSources.pcLogoutSources,
+                    JsonType.pcLogout,
+                    inputSelector,
+                    i === 0 ? MatchCase.class : MatchCase.id);
+            }
+            if (isPc && isLogin) {
+                this.execCheckInputSelector(
+                    pcLoginSources.pcLoginSources,
+                    JsonType.pcLogin,
+                    inputSelector,
+                    i === 0 ? MatchCase.class : MatchCase.id);
+            }
         }
-        if (isSp && isLogin) {
-            this.execCheckInputSelector(spLoginSources.spLoginSources, JsonType.spLogin, inputSelector);
-        }
-        if (isPc && isLogout) {
-            this.execCheckInputSelector(pcLogoutSources.pcLogoutSources, JsonType.pcLogout, inputSelector);
-        }
-        if (isPc && isLogin) {
-            this.execCheckInputSelector(pcLoginSources.pcLoginSources, JsonType.pcLogin, inputSelector);
-        }
-        this.showLoading = false;
     }
 
     private createConfirmPageList(jsonList: object[]): void {
@@ -77,14 +96,15 @@ export class CssClassCheckComponent implements OnInit {
         });
     }
 
-    private execCheckInputSelector(htmlJson: object, jsonType: JsonType, inputSelector: string): void {
+    private execCheckInputSelector(htmlJson: object, jsonType: JsonType, inputSelector: string, matchCase: MatchCase): void {
         const jsonTypeLabel: string = JsonTypeHashMap.find(jt => jt.jsonType === jsonType).label;
+        let isFirstMatch = false;
         for (const [key, value] of Object.entries(htmlJson)) {
             const html = htmlJson[key]['source'];
-            const checkAttrList = this.getTargetAttributeList(html, MatchCaseHashMap.find(m => m.caseId === MatchCase.class).label);
+            const checkAttrList = this.getTargetAttributeList(html, matchCase);
             let retMatchCount = 0;
             if (checkAttrList) {
-                retMatchCount = this.execSelectorMatchCheck(inputSelector, checkAttrList);
+                retMatchCount = this.execSelectorMatchCheck(inputSelector, checkAttrList, matchCase);
             }
             if (retMatchCount > 0) {
                 this.resultList.push({
@@ -93,17 +113,24 @@ export class CssClassCheckComponent implements OnInit {
                     url: value.url,
                     typeLabel: jsonTypeLabel,
                     type: jsonType,
-                    matchCase: MatchCase.class,
-                    matchCount: retMatchCount
+                    matchCase: matchCase === MatchCase.class ? MatchCase.class : MatchCase.id,
+                    matchCount: retMatchCount,
+                    futureShopUrl: !!value.futureShopUrl ? value.futureShopUrl : '',
+                    isFirstMatch: !isFirstMatch
                 });
+                isFirstMatch = true;
             }
         }
     }
 
-    private execSelectorMatchCheck(inputSelector, checkAttrList: string[]): number {
+    private execSelectorMatchCheck(inputSelector, checkAttrList: string[], matchCase: MatchCase): number {
       let hitCount = 0;
       checkAttrList.forEach(v => {
-          v = v.replace('class=', '');
+          if (matchCase === MatchCase.class) {
+              v = v.replace('class=', '');
+          } else {
+              v = v.replace('id=', '');
+          }
           if ( v === "'" + inputSelector + "'" ||
               v.startsWith("'" + inputSelector + ' ') ||
               v.endsWith(' ' + inputSelector + "'") ||
@@ -115,12 +142,17 @@ export class CssClassCheckComponent implements OnInit {
       return hitCount;
     }
 
-    private getTargetAttributeList(html: string, attr: string): string[] {
+    private getTargetAttributeList(html: string, matchCase: MatchCase): string[] {
+        const attr = MatchCaseHashMap.find(m => m.caseId === matchCase).label;
         const regExp = new RegExp(`${attr}='([^']*)'`, 'g');
-        return html.match(regExp);
+        return !!html ? html.match(regExp) : [];
     }
 
     goToTargetPage(url: string): void {
       window.open(url);
+    }
+
+    showFutureShopUrlInfo(): void {
+        this.showFutureShopBalloon = true;
     }
 }

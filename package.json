@@ -22,6 +22,7 @@
     "@angular/platform-browser-dynamic": "~11.2.8",
     "@angular/router": "~11.2.8",
     "@ngx-translate/core": "^13.0.0",
+    "balloon-css": "^1.2.0",
     "fs": "0.0.1-security",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

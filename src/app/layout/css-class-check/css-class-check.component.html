@@ -22,21 +22,27 @@
         </form>
       </mat-card>
       <mat-card class="result">
-        <h1>Result</h1>
+        <h1>{{fg.get('inputStyleStr').value}}&nbsp;&nbsp;Result</h1>
         <ul>
-          <li *ngFor="let r of resultList">
-            <ng-container *ngIf="r.pageId == 1">
+          <li *ngFor="let r of resultList" >
+            <ng-container *ngIf="r.isFirstMatch">
               <div class="group-title-area">
                 <mat-icon *ngIf="r.type === 0 || r.type === 1">computer</mat-icon>
                 <mat-icon *ngIf="r.type === 2 || r.type === 3">smartphone</mat-icon>
                 <p class="group-title">{{r.typeLabel}}</p>
               </div>
             </ng-container>
+            <div class="show-future-info-button-wrapper">
+              <button class="show-future-info-button" mat-stroked-button color="primary" (click)="showFutureShopUrlInfo()">FS</button>
+            </div>
             <div class="hit-page" (click)="goToTargetPage(r.url)">
               <p class="page-name">{{r.pageName}}</p>
               <p>該当：{{r.matchCount}}件</p>
               <p>対象属性：{{r.matchCase | matchCaseLabel}}</p>
-                <mat-icon>double_arrow</mat-icon>
+              <mat-icon>double_arrow</mat-icon>
+            </div>
+            <div class="future-shop-balloon" *ngIf="showFutureShopBalloon">
+xxx
             </div>
           </li>
         </ul>

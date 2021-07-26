@@ -6,6 +6,8 @@ export interface ResultMap {
     typeLabel: string;
     matchCase: MatchCase;
     matchCount: number;
+    futureShopUrl: string;
+    isFirstMatch: boolean;
 }
 export enum JsonType {
     pcLogout = 0,
